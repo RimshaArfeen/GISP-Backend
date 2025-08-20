@@ -213,7 +213,7 @@ function verifyToken(req, res, next) {
 
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port ${PORT}`);
+// });
 export const handler = serverless(app);
