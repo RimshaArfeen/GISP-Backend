@@ -115,4 +115,5 @@ function verifyToken(req, res, next) {
 }
 
 // Export for Vercel
-export const handler = serverless(app);
+export default serverless(app);
+
