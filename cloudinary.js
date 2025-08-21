@@ -1,26 +1,25 @@
-// ensures .env is loaded before config
 // cloudinary.js
-import dotenv from "dotenv";
-import path from "path";
-
-dotenv.config({ path: path.resolve("../.env") });
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 
+// Vercel injects environment variables automatically, so no need for dotenv.config() here.
+const cloud_name = process.env.CLOUDINARY_CLOUD_NAME;
+const api_key = process.env.CLOUDINARY_API_KEY;
+const api_secret = process.env.CLOUDINARY_API_SECRET;
 
-const cloud_name=process.env.CLOUDINARY_CLOUD_NAME
-const  api_key=process.env.CLOUDINARY_API_KEY
-const  api_secret=process.env.CLOUDINARY_API_SECRET
+// Configure Cloudinary using injected environment variables
 cloudinary.config({
-  cloud_name ,
+  cloud_name,
   api_key,
   api_secret,
-});  
-console.log("Cloud Name:",cloud_name);
+});  
+
+// These console logs are great for debugging but you can remove them for production
+console.log("Cloud Name:", cloud_name);
 console.log("API Key:", api_key);
 console.log("API Secret:", api_secret ? "Loaded ✅" : "❌ Missing");
 
-
+// Configure Multer storage using Cloudinary
 export const storage = new CloudinaryStorage({
   cloudinary,
   params: {

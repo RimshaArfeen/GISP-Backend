@@ -1,8 +1,7 @@
 
+// api/index.js
 // Import required modules
 import dotenv from "dotenv";
-dotenv.config(); // Vercel injects env vars, no need for custom path
-
 import express from "express";
 import mongoose from "mongoose";
 import User from "../Schema/Applicant.js";
