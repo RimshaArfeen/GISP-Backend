@@ -1,38 +1,37 @@
-
-// api/index.js
-// Import required modules
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
-import User from "../Schema/Applicant.js";
-import StudentInfo from "../Schema/StudentInfo.js";
 import cors from "cors";
 import multer from "multer";
 import JWT from "jsonwebtoken";
 import serverless from "serverless-http";
+
 import { storage } from "../cloudinary.js";
+import User from "../models/Applicant.js";
+import StudentInfo from "../models/StudentInfo.js";
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("✅ MongoDB connected"))
-.catch(err => console.error("❌ MongoDB connection error:", err));
+dotenv.config();
 
-// Initialize Express app
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Multer setup (Cloudinary storage)
-const upload = multer({ storage });
+// ✅ MongoDB connection (optimized for serverless)
+if (!mongoose.connection.readyState) {
+  mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch(err => console.error("❌ MongoDB error:", err));
+}
 
-const jwtKey = process.env.JWT_SECRET || "jwtSecretKey"; // better from env
+const upload = multer({ storage });
+const jwtKey = process.env.JWT_SECRET || "jwtSecretKey";
 
 // Routes
 app.get("/", (req, res) => {
-  res.send("We are learning NodeJs");
+  res.json({ message: "Hello from Vercel backend!" });
 });
 
 app.post("/signup", async (req, res) => {
@@ -77,7 +76,17 @@ app.post("/applicationForm", upload.single("file"), async (req, res) => {
   }
 });
 
-// Profile
+// Middleware to verify token
+function verifyToken(req, res, next) {
+  let bearerHeader = req.headers["authorization"];
+  if (bearerHeader) {
+    req.token = bearerHeader.split(" ")[1];
+    next();
+  } else {
+    res.status(403).json({ message: "Token missing" });
+  }
+}
+
 app.get("/profile", verifyToken, (req, res) => {
   JWT.verify(req.token, jwtKey, (err, authData) => {
     if (err) res.status(403).json({ result: "Invalid token" });
@@ -85,7 +94,6 @@ app.get("/profile", verifyToken, (req, res) => {
   });
 });
 
-// Admin
 app.get("/adminPg", async (req, res) => {
   try {
     let studentData = await StudentInfo.find();
@@ -102,17 +110,5 @@ app.put("/adminPg/:id", async (req, res) => {
   res.json({ message: `Application ${status.toLowerCase()} successfully`, updApplication });
 });
 
-// Middleware to verify token
-function verifyToken(req, res, next) {
-  let bearerHeader = req.headers["authorization"];
-  if (bearerHeader) {
-    req.token = bearerHeader.split(" ")[1];
-    next();
-  } else {
-    res.status(403).json({ message: "Token missing" });
-  }
-}
-
 // Export for Vercel
 export default serverless(app);
-
