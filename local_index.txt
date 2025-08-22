@@ -219,3 +219,25 @@ function verifyToken(req, res, next) {
 //   console.log(`Server is running on port ${PORT}`);
 // });
 export const handler = serverless(app);
+
+
+
+
+
+
+////////////////
+GISP-Backend
+-Schema
+-api
+  -- index.js
+-uploads
+-.gitignore
+-cloudinary.js
+-local_index.txt
+-package-lock.json
+-package.json
+-vercel.json
+
+
+
+

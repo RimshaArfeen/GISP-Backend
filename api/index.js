@@ -1,10 +1,12 @@
+
+//api/index.js
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import multer from "multer";
 import JWT from "jsonwebtoken";
-import serverless from "serverless-http";
+// import serverless from "serverless-http";
 
 import { storage } from "../cloudinary.js";
 import User from "../models/Applicant.js";
@@ -111,4 +113,7 @@ app.put("/adminPg/:id", async (req, res) => {
 });
 
 // Export for Vercel
-export default serverless(app);
+// export default serverless(app);
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
