@@ -113,7 +113,7 @@ app.put("/adminPg/:id", async (req, res) => {
 });
 
 // Export for Vercel
-// export default serverless(app);
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
-});
+export default serverless(app);
+// app.listen(3000, () => {
+//   console.log("Server is running on port 3000");
+// });
