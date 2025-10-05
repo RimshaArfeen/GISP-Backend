@@ -1,4 +1,5 @@
-
+  
+  
 //api/index.js
 import dotenv from "dotenv";
 import express from "express";
@@ -6,11 +7,11 @@ import mongoose from "mongoose";
 import cors from "cors";
 import multer from "multer";
 import JWT from "jsonwebtoken";
-// import serverless from "serverless-http";
+import serverless from "serverless-http";
 
 import { storage } from "../cloudinary.js";
-import User from "../models/Applicant.js";
-import StudentInfo from "../models/StudentInfo.js";
+import User from "../Schema/Applicant.js";
+import StudentInfo from "../Schema/StudentInfo.js";
 
 dotenv.config();
 

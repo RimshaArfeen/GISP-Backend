@@ -2,12 +2,12 @@
 // cloudinary.js
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
-
-// Vercel injects environment variables automatically, so no need for dotenv.config() here.
+import dotenv from "dotenv";
+dotenv.config();
 const cloud_name = process.env.CLOUDINARY_CLOUD_NAME;
 const api_key = process.env.CLOUDINARY_API_KEY;
 const api_secret = process.env.CLOUDINARY_API_SECRET;
-
+ 
 // Configure Cloudinary using injected environment variables
 cloudinary.config({
   cloud_name,
@@ -16,7 +16,7 @@ cloudinary.config({
 });  
 
 // These console logs are great for debugging but you can remove them for production
-console.log("Cloud Name:", cloud_name);
+console.log("Cloud Name:",process.env.CLOUDINARY_CLOUD_NAME );
 console.log("API Key:", api_key);
 console.log("API Secret:", api_secret ? "Loaded ✅" : "❌ Missing");
 
